@@ -1,0 +1,63 @@
+{
+    "id" : "mlb_boxscore",
+    "name" : "MLB Boxscore",
+    "data" : [
+        {
+			"id" : "baseball-mlb-boxscore-home-team-batting-lineup",
+            "caption" : "Home team batting lineup",
+            "input_type" : "table",
+            "elements" : [
+                {
+                    "id" : "baseball-mlb-boxscore-batting-lineup",
+                    "caption" : "Batting line up",
+                    "input_type" : "table",
+                    "elements" : [
+						{
+							"id" : "at-bats",
+							"caption" : "At bats",
+							"input_type" : "text"
+						},
+						{
+							"id" : "batting-average,
+							"caption" : "Batting average",
+							"input_type" : "text"
+						}
+						{
+							"id" : "batting-slot",
+							"caption" : "Batting slot",
+							"input_type" : "text"
+						}
+					]
+                }
+            ]
+        },
+        {
+            "id" : "attendance",
+            "caption" : "Attendance",
+            "input_type" : "text",
+            "maxchars" : 32
+        },
+        {
+            "id" : "weather",
+            "caption" : "Weather",
+            "input_type" : "group",
+            "elements" : [
+				{
+					"id" : "temperature",
+					"caption" : "Temperature",
+					"input_type" : "text",
+				},
+				{
+					"id" : "weather-description",
+					"caption" : "Description",
+					"input_type" : "text",
+				},
+				{
+					"id" : "wind",
+					"caption" : "Wind",
+					"input_type" : "text",
+				}
+			]
+        }
+    ]
+}

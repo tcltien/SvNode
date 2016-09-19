@@ -37,7 +37,7 @@ module.exports = {
     /* Server port */
     port: process.env.PORT || 3000,
 	/* Name of templating engine to render the view */
-    templateEngine: 'swig',
+    templateEngine: 'nunjucks',
 
     /** Session configuration * */
     sessionSecret: 'SDSADMIN',
@@ -61,4 +61,10 @@ module.exports = {
 	
 	/* Character set */
 	charset: 'utf8',
+	
+	/* Admin User */
+	user : {
+		username : 'admin', 
+		passwd : 'directv'
+	}
 };

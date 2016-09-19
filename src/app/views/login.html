@@ -47,17 +47,17 @@
 	<script>
 		
 		$('#login-btn').click(function(){
-			
-			//$('.login-overlay').removeClass('hidden');
 			$('#login-form').submit();
 		});
-		/**
+		$(document).ready(function(){
+			if (window.location.hash == "#error") {
+				$('.login-overlay').removeClass('hidden');
+			}
+		});
 		$(document).click(function(e){
 			if (!$('#login-btn').is(e.target)) {
 				$('.login-overlay').addClass('hidden');
 			}
 		})
-		
-		**/
 	</script>
 </body>

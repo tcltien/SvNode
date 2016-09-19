@@ -14,6 +14,7 @@
 
 var config = require('../../config/config');
 var logger = require('winston').loggers.get('application');
+var uuid = require('uuid');
 
 /**
  * Check the authenticated session from MCS database.
@@ -24,6 +25,7 @@ var logger = require('winston').loggers.get('application');
  */
 exports.requiresLogin = function(req, res, next) {
     //logger.debug(req.session.session_id);
+	console.log(req.session);
     if ((!req.session || !req.session.session_id) && config.checkSession) {
         // login
         res.redirect(config.app.webroot + '/login');
@@ -39,24 +41,23 @@ exports.requiresLogin = function(req, res, next) {
  * @param  {HttpResponse} res The HTTP response
  */
 exports.login = function(req, res) {
-    logger.info('Login page start..........');
-    res.render('login.html');
+	if ((!req.session || !req.session.session_id) && config.checkSession) {
+		logger.info('Login page start..........');
+		res.render('login.html');
+	}else {
+		logger.info('Logged in');
+		res.redirect(config.app.webroot + '/index');
+	}
 };
 
 exports.processLogin = function(req, res, next) {
 	
-	var login = {
-		username : 'admin', 
-		passwd : 'directv'
-	};
-	var session = req.query.session_id || req.body.session_id;
-	if (login.username == req.body.username && login.passwd == req.body.passwd ) {
+	if (config.user.username == req.body.username && config.user.passwd == req.body.passwd ) {
 		req.session.cookie.originalMaxAge = config.sessionTimeOut * 1000;
-		req.session.cookie.expires = new Date(Date.now() + config.sessionTimeOut * 1000);
-		req.session.session_id = session;
+		req.session.session_id = uuid.v4();
 		next();
 	}else {
-		res.redirect('/');
+		res.redirect(config.app.webroot + '/login#error');
 	}
 };
 

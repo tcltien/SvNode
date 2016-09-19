@@ -16,25 +16,29 @@
  * Module dependencies.
  */
 var express = require('express'),
+	compression = require('compression'),
+	morgan = require('morgan'),
+	bodyParser  = require('body-parser'),
+	cookieParser  = require('cookie-parser'),
+	methodOverride = require('method-override'),
+	expressSession  = require('express-session'),
     flash = require('connect-flash'),
-    config = require('./config'),
     consolidate = require('consolidate'),
-    swig = require('swig'),
+    nunjucks = require('nunjucks'),
     path = require('path'),
-	utilities = require('./utilities'),
-    fs = require('fs');
+	logger =  require('winston').loggers.get('application'),
+	couchbase = require('couchbase'),
+	config = require('./config'),
+	utilities = require('./utilities');
 
 module.exports = function() {
     // Initialize express app
     var app = express();
-
+	
     // Setting the environment locals
-    app.locals({
-        title: config.app.title,
-        description: config.app.description,
-        keywords: config.app.keywords,
-        webroot: config.app.webroot
-    });
+    app.locals.title = config.app.title;
+    app.locals.description = config.app.description;
+    app.locals.webroot= config.app.webroot;
 
     // Create logs folder
 
@@ -45,7 +49,7 @@ module.exports = function() {
     });
 
     // Should be placed before express.static
-    app.use(express.compress({
+    app.use(compression({
         filter: function(req, res) {
             return (/json|text|javascript|css/).test(res.getHeader('Content-Type'));
         },
@@ -55,47 +59,57 @@ module.exports = function() {
     // Showing stack errors
     app.set('showStackError', true);
 
-    // Set swig as the template engine
+    // Set nunjucks as the template engine
     app.engine('html', consolidate[config.templateEngine]);
 
     // Set views path and view engine
     app.set('view engine', 'html');
     app.set('views', config.root + '/app/views');
-    swig.setDefaults({
-        cache: false,
-        autoescape: false
-    });
+	nunjucks.configure({ 
+		autoescape: false ,
+		noCache: true
+	});
     // Application Configuration for development environment
-    app.configure('development', function() {
+    if('development' == process.env.NODE_ENV) {
         // Enable logger
-        app.use(express.logger('dev'));
+        app.use(morgan('dev'));
 
         // Disable views cache
         app.set('view cache', false);
-    });
+    }
 
     // Application Configuration for production environment
-    app.configure('production', function() {
+    if('production' == process.env.NODE_ENV) {
         app.locals({
             cache: 'memory' // To solve SWIG Cache Issues
         });
-    });
-
+    }
+	// Init database
+	var cluster = new couchbase.Cluster('couchbase://' + config.couchbase.server);
+	var bucket = cluster.openBucket(config.couchbase.bucket, config.couchbase.password, function(err) {
+    	if (err) {
+        	console.error('Got error: %j', err);
+    	} else {
+     		console.info('Success connect couchbase server');
+		}
+    }); 
+	
     // request body parsing middleware should be above methodOverride
-    app.use(express.urlencoded());
-    app.use(express.json());
-    app.use(express.methodOverride());
-    app.use(express.bodyParser());
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.json());
+    app.use(methodOverride());
 
     // Enable jsonp
     app.enable('jsonp callback');
 
     // cookieParser should be above session
-    app.use(express.cookieParser());
+    app.use(cookieParser());
 
     // express/mongo session storage
-    app.use(express.session({
+    app.use(expressSession({
         secret: config.sessionSecret,
+		resave: false,
+		saveUninitialized: true,
         cookie: {
             maxAge: config.sessionTimeOut * 1000,
             expires: new Date(Date.now() + config.sessionTimeOut * 1000)
@@ -104,9 +118,6 @@ module.exports = function() {
 
     // connect flash for flash messages
     app.use(flash());
-
-    // routes should be at the last
-    app.use(app.router);
 
     // Setting the app router and static folder
     app.use(config.app.webroot, express.static(config.root + '/public'));
@@ -138,6 +149,17 @@ module.exports = function() {
             error: 'Not Found'
         });
     });
-
+	
     return app;
+};
+
+module.exports.couchbaseBucket = function() {
+	var cluster = new couchbase.Cluster('couchbase://' + config.couchbase.server);
+	return cluster.openBucket(config.couchbase.bucket, config.couchbase.password, function(err) {
+		if (err) {
+			console.error('Got error: %j', err);
+		} else {
+     		logger.info('Success connect couchbase server');
+		}
+	});
 };

@@ -1,0 +1,137 @@
+{
+    "id" : "mlb_standing",
+    "name" : "MLB Standing",
+    "data" : [
+        {
+			"id" : "baseball-mlb-league-standings",
+            "caption" : "League",
+            "input_type" : "",
+            "elements" : [
+                {
+                    "id" : "baseball-mlb-division-standings",
+                    "caption" : "Division",
+                    "input_type" : "",
+                    "elements" : [
+						{
+							"id" : "baseball-mlb-team-standings",
+							"caption" : "Team",
+							"input_type" : "",
+							"elements: [
+								{
+									"teamId": "",
+									"caption": "Team ID",
+									"type": "text"
+								},
+								{
+									"id" : "clinched-division",
+									"caption" : "Clinched Division",
+									"input_type" : "object",
+									"elements": [
+										{
+											"clinched-id": "",
+											"caption": "Clinched Id",
+											"type" : "text"											
+										},
+										{
+											"clinched": "",
+											"caption": "Clinched",
+											"type" : "text"											
+										}
+									]
+								},
+								{
+									"id" : "team-city",
+									"caption" : "Team City",
+									"input_type" : "object",
+									"elements": [
+										{
+											"city": "",
+											"caption": "City",
+											"type" : "text"											
+										}
+									]
+								},
+								{
+									"id" : "team-name",
+									"caption" : "Team Name",
+									"input_type" : "object",
+									"elements": [
+										{
+											"name": "",
+											"caption": "name",
+											"type" : "text"											
+										}
+									]
+								},
+								{
+									"id" : "win-loss-record",
+									"caption" : "Win Loss Record",
+									"input_type" : "object",
+									"multiple_elements": "true",
+									"elements": [
+										{
+											"name": "",
+											"caption": "Name",
+											"type" : "text"											
+										},
+										{
+											"type_id": "",
+											"caption": "Type Id",
+											"type" : "text"											
+										},
+										{
+											"type": "",
+											"caption": "Type",
+											"type" : "text"											
+										},
+										{
+											"win": "",
+											"caption": "Win",
+											"type" : "text"											
+										},
+										{
+											"loss": "",
+											"caption": "Loss",
+											"type" : "text"											
+										}										
+									]
+								}
+							]
+						}
+					]
+                }
+            ]
+        },
+        {
+            "id" : "complete-through",
+            "caption" : "Complete Through",
+            "input_type" : "date"        
+        },
+		
+		{
+            "id" : "data",
+            "caption" : "Date",
+            "input_type" : "date"        
+        },
+		{
+            "id" : "docId",
+            "caption" : "Doc Id",
+            "input_type" : "text"        
+        },		
+		{
+            "id" : "docType",
+            "caption" : "Doc Type",
+            "input_type" : "text"        
+        },
+		{
+            "id" : "league",
+            "caption" : "League",
+            "input_type" : "text"        
+        },
+		{
+            "id" : "season",
+            "caption" : "Season",
+            "input_type" : "text"        
+        }   
+    ]
+}

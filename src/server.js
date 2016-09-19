@@ -23,7 +23,7 @@ var app = require('./config/express')();
 app.listen(config.port);
 
 // Expose app
-exports = module.exports = app;
+module.exports.app = app;
 
 // Logging
 var logger = winston.loggers.get('application');
