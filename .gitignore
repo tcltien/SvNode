@@ -1,16 +1,1 @@
-src/node_modules/.bin/_mocha
-src/node_modules/.bin/forever
-src/node_modules/.bin/grunt
-src/node_modules/.bin/mocha
-src/node_modules/.bin/nunjucks-precompile
-src/node_modules/body-parser/HISTORY.md
-src/node_modules/body-parser/index.js
-src/node_modules/body-parser/LICENSE
-src/node_modules/body-parser/package.json
-src/node_modules/body-parser/README.md
-src/node_modules/body-parser/lib/read.js
-src/node_modules/body-parser/lib/types/json.js
-src/node_modules/body-parser/lib/types/raw.js
-src/node_modules/body-parser/lib/types/text.js
-src/node_modules/body-parser/lib/types/urlencoded.js
-src/node_modules/body-parser/node_modules/bytes/History.md
+src/node_modules/.bin/*
