@@ -1,14 +1,4 @@
-/*
- * express.js - Express configuration file.
- *
- * Copyright (c) 2016 DIRECTV, Inc.
- * An Unpublished Work.  All Rights Reserved.
- *
- * DIRECTV PROPRIETARY:  The information contained in or disclosed by this
- * document is considered proprietary by DIRECTV, Inc.  This document and/or the
- * information contained therein shall not be duplicated nor disclosed in whole
- * or in part without the specific written permission of DIRECTV, Inc.
- */
+
 
 'use strict';
 
@@ -27,7 +17,7 @@ var express = require('express'),
     nunjucks = require('nunjucks'),
     path = require('path'),
 	logger =  require('winston').loggers.get('application'),
-	couchbase = require('couchbase'),
+	// couchbase = require('couchbase'),
 	config = require('./config'),
 	utilities = require('./utilities');
 
@@ -85,14 +75,14 @@ module.exports = function() {
         });
     }
 	// Init database
-	var cluster = new couchbase.Cluster('couchbase://' + config.couchbase.server);
-	var bucket = cluster.openBucket(config.couchbase.bucket, config.couchbase.password, function(err) {
-    	if (err) {
-        	console.error('Got error: %j', err);
-    	} else {
-     		console.info('Success connect couchbase server');
-		}
-    }); 
+	// var cluster = new couchbase.Cluster('couchbase://' + config.couchbase.server);
+	// var bucket = cluster.openBucket(config.couchbase.bucket, config.couchbase.password, function(err) {
+ //    	if (err) {
+ //        	console.error('Got error: %j', err);
+ //    	} else {
+ //     		console.info('Success connect couchbase server');
+	// 	}
+ //    }); 
 	
     // request body parsing middleware should be above methodOverride
     app.use(bodyParser.urlencoded({ extended: false }));
